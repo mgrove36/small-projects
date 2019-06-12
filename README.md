@@ -1,1 +1,2 @@
-python-projects
+# Python Projects
+Some small python projects I am doing/have done, mainly for GCSE Computer Science.
