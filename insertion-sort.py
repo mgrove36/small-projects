@@ -4,6 +4,5 @@ for i in range(0, len(array)):
     j = 0
     while array[i] > array[j]:
         j += 1
-    if (j - 1) != i:
-        array.insert(j, array.pop(i))
+    array.insert(j, array.pop(i))
 print("New array:", array)

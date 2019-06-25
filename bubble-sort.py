@@ -11,4 +11,4 @@ while swapped:
                 array[i + 1] = item
                 swapped = True
 
-print("New array:", array)
+print("New array:     ", array)
