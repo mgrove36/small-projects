@@ -32,7 +32,7 @@ def getMark(test_number, student_index, max_mark):
 # do this for all students
 for i in range(number_of_students):
     # retrieve and store student's name
-    student_names.append(input("Name: "))
+    student_names.append(input("Student %d name: " % (i + 1)))
 
 # do this for all students
 for i in range(number_of_students):
