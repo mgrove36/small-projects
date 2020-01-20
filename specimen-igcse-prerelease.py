@@ -23,6 +23,9 @@ def getMark(test_number, student_index, max_mark):
                 mark = None
         else:
             mark = None
+        # if input is invalid, print error message
+        if not mark:
+            print("Invalid input. Please enter a number between 0 and %d." % max_mark)
     # return mark
     return int(mark)
 
