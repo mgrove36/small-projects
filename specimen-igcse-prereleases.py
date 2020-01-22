@@ -1,4 +1,4 @@
-def prerelease_047802:
+def prerelease_047802():
     # define lists for all required data
     student_names = []
     test_1_marks = []
