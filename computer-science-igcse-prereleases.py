@@ -1,3 +1,4 @@
+# specimen Cambridge iGCSE Computer Science prerelease
 def prerelease_047802_specimen():
     # define lists for all required data
     student_names = []
@@ -56,6 +57,7 @@ def prerelease_047802_specimen():
     # print average total for all students
     print("Average total: %.2f" % (sum / 30))
 
+# 2020 Cambridge iGCSE Computer Science prerelease (India)
 def prerelease_047822_india_2020():
     # ask which base model user wants
     print("Which model?")
@@ -201,5 +203,3 @@ def prerelease_047822_india_2020():
     print("Total cost: Rs %.2f - with %s" % (cost, order_message))
     payments_number = [1, 48, 80]
     print("%d payment(s) of Rs %.2f" % (payments_number[payment_option], cost / payments_number[payment_option]))
-
-prerelease_047802_specimen()
