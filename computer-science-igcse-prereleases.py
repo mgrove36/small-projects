@@ -91,7 +91,7 @@ def prerelease_047822_india_2020():
     # ask for input, remove duplicated characters and remove non-numerical characters
     optional_extras = "".join(char for char in "".join(set(input("Please enter the numbers of the optional extras you would like. Invalid options will be ignored: "))) if char.isdigit())
     # remove numbers outside of valid range
-    optional_extras = "".join(char for char in optional_extras if 0 < char < 6)
+    optional_extras = "".join(char for char in optional_extras if 0 < int(char) < 6)
 
     # add costs of chosen optional extras to total cost
     optional_extra_costs = [45000, 5500, 1000, 350, 1000]
@@ -120,11 +120,13 @@ def prerelease_047822_india_2020():
                 print("Invalid input. Please enter a number.")
                 trade_amount = None
             # if input is a number outside of the acceptable range, display an error
-            elif (trade_amount <= 0):
+            elif (int(trade_amount) <= 0):
                 print("Invalid input. Please enter a number above 0.")
                 trade_amount = None
+        trade_amount = float(trade_amount)
     else:
         car_trade = False
+        trade_amount = 0
     
     # display total cost without discounts
     print("Cost: Rs %.2f" % cost)
@@ -142,11 +144,11 @@ def prerelease_047822_india_2020():
     print("Which payment option would you like?")
     cashback = cost * 0.01
     if (cashback > optional_extras_cost):
-        print("(1) Pay full amount now - 1% \cashback - total cost Rs %.2f - one payment - including cashback of Rs %.2f | or free optional extras - total cost %.2f - one payment - including discount of %.2f" % (cost * 0.99, cashback, cost - optional_extras_cost, optional_extras_cost))
+        print("(1) Pay full amount now - 1%s cashback - total cost Rs %.2f - one payment - including cashback of Rs %.2f | or free optional extras - total cost %.2f - one payment - including discount of %.2f" % ("%", cost * 0.99 - discount, cashback, cost - optional_extras_cost - discount, optional_extras_cost))
     else:
-        print("(1) Pay full amount now - free optional extras - total cost %.2f - one payment - including discount of %.2f | or 1% \cashback - total cost Rs %.2f - one payment - including cashback of Rs %.2f" % (cost - optional_extras_cost, optional_extras_cost, cost * 0.99, cashback))
-    print("(2) Monthly payements for four years - no charge - total cost Rs %.2f - payments of Rs %.2f - 48 payments" % (cost, cost / 48))
-    print("(3) Monthly payments for seven years - 5% \charge - total cost Rs %.2f - payments of Rs %.2f - 80 payments" % (cost * 1.05, cost * 1.05 / 84))
+        print("(1) Pay full amount now - free optional extras - total cost %.2f - one payment - including discount of %.2f | or 1%s cashback - total cost Rs %.2f - one payment - including cashback of Rs %.2f" % (cost - optional_extras_cost - discount, optional_extras_cost, "%", cost * 0.99 - discount, cashback))
+    print("(2) Monthly payements for four years - no charge - total cost Rs %.2f - payments of Rs %.2f - 48 payments" % (cost - discount, cost / 48))
+    print("(3) Monthly payments for seven years - 5%s charge - total cost Rs %.2f - payments of Rs %.2f - 80 payments" % ("%", cost * 1.05 - discount, cost * 1.05 / 84))
     # keep asking until valid input entered
     payment_option = None
     while (not payment_option):
@@ -161,6 +163,7 @@ def prerelease_047822_india_2020():
             print("Invalid input. Please enter a number between 1 and 3.")
             payment_option = None
     # calculate total cost, adjusted for chosen payment option
+    payment_option = int(payment_option)
     if (payment_option == 3):
         cost *= 1.05
 
@@ -168,11 +171,11 @@ def prerelease_047822_india_2020():
     if (payment_option == 1):
         print("Which option would you like?")
         if (cashback > optional_extras_cost):
-            print("(1) Cashback - save Rs %.2f" % cashback)
-            print("(2) Free optional extras - save Rs %.2f" % optional_extras_cost)
+            print("(1) Cashback - save Rs %.2f - total cost Rs %.2f" % (cashback, cost * 0.99 - discount))
+            print("(2) Free optional extras - save Rs %.2f - total cost Rs %.2f" % (optional_extras_cost, cost - optional_extras_cost - discount))
         else:
-            print("(1) Free optional extras - save Rs %.2f - total cost Rs %.2f" % (optional_extras_cost, cost - optional_extras_cost))
-            print("(2) Cashback - save Rs %.2f - total cost Rs %.2f" % (cashback, cost * 0.99))
+            print("(1) Free optional extras - save Rs %.2f - total cost Rs %.2f" % (optional_extras_cost, cost - optional_extras_cost - discount))
+            print("(2) Cashback - save Rs %.2f - total cost Rs %.2f" % (cashback, cost * 0.99 - discount))
         # keep asking until valid input entered
         cashback_or_free_extras = None
         while (not cashback_or_free_extras):
@@ -182,13 +185,14 @@ def prerelease_047822_india_2020():
                 print("Invalid input. Please enter a number.")
                 cashback_or_free_extras = None
             # if input is number outside of acceptable range, display error
-            elif (not 0 < cashback_or_free_extras < 3):
+            elif (not 0 < int(cashback_or_free_extras) < 3):
                 print("Invalid input. Please enter either 1 or 2.")
                 cashback_or_free_extras = None
         # calculate total cost and store order discount message
+        cashback_or_free_extras = int(cashback_or_free_extras)
         if ((cashback > optional_extras_cost and cashback_or_free_extras == 1) or (cashback <= optional_extras_cost and cashback_or_free_extras == 2)):
             cost = cost * 0.99
-            order_message = "1% \cashback of Rs %.2f" % cashback
+            order_message = "1%s cashback of Rs %.2f" % ("%", cashback)
         else:
             cost = cost - optional_extras_cost
             order_message = "free optional extras (Rs %.2f)" % optional_extras_cost
@@ -196,10 +200,14 @@ def prerelease_047822_india_2020():
     if payment_option == 2:
         order_message = "no discount"
     elif payment_option == 3:
-        order_message = "5% price increase of Rs %.2f" % cost / 1.05 * 0.05
+        order_message = "5%s price increase of Rs %.2f" % ("%", cost / 1.05 * 0.05)
     
+    cost = cost - discount - trade_amount
+
     # print order summary
     print("\nOrder summary:")
     print("Total cost: Rs %.2f - with %s" % (cost, order_message))
     payments_number = [1, 48, 80]
-    print("%d payment(s) of Rs %.2f" % (payments_number[payment_option], cost / payments_number[payment_option]))
+    print("%d payment(s) of Rs %.2f" % (payments_number[payment_option - 1], cost / payments_number[payment_option - 1]))
+
+prerelease_047822_india_2020()
