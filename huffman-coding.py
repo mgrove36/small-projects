@@ -73,5 +73,4 @@ for char in txt:
 	output += "".join(find_node(nodes, char))
 
 # print encrypted message
-
 print("Encrypted message: %s" % output)
