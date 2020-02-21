@@ -1,3 +1,4 @@
+# import module to sort characters in order of frequency
 from collections import Counter
 
 # function to find path of desired character
