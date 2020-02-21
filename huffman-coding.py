@@ -25,7 +25,7 @@ txt = input("Text: ")
 info = Counter(txt).most_common()
 # change the list into ascending order
 info.reverse()
-# create list for character tuples
+# create list for character tupl	es
 nodes = []
 # create list for node usage frequencies
 frequencies = []
@@ -36,7 +36,7 @@ for item in info:
 	frequencies.append(item[1])
 
 # repeat until only one top-level node exists
-while len(nodes) > 1:
+while len(nodes) > 2:
 	# combine two least frequent characters' nodes into a new tuple node, containing the old nodes (old_node_1, old_node_2)
 	new_node = (nodes[0], nodes[1])
 	# combine two least frequent characters' frequencies into a total frequency, to be used at the top level of the list of nodes
