@@ -226,7 +226,7 @@ while True:
             # update display contents
             updateDisplay()
     else:
-        #check if the user wants to quit
+        # check if the user wants to quit
         checkQuit()
         # check if any of the start buttons have been pressed
         sortingAlgorithm = checkStartButtons()
