@@ -3,12 +3,10 @@ from collections import Counter
 
 # function to find path of desired character
 def find_node(nodes, target_character):
-	# for each item in nodes
     for index, item in enumerate(nodes):
-		# if item is desired character, return the path to it
         if item == target_character:
+			# return its path
             return [str(index)]
-		# if the item is a list or tuple
         if isinstance(item, (list, tuple)):
 			# run this function again to dig further into the nested items
             path = find_node(item, target_character)
@@ -19,13 +17,13 @@ def find_node(nodes, target_character):
     return []
 
 def encode(txt):
-	# create list of tuples in descending order of frequency: (character, frequency)
+	# list of tuples in descending order of frequency: (character, frequency)
 	info = Counter(txt).most_common()
 	# change the list into ascending order
 	info.reverse()
-	# create list for character tuples
+	# list for character tuples
 	nodes = []
-	# create list for node usage frequencies
+	# list for node usage frequencies
 	frequencies = []
 
 	# copy nodes and their usage frequencies to the dedicated lists
@@ -44,40 +42,34 @@ def encode(txt):
 		#  remove frequencies that have been summed and added to the new frequency
 		del frequencies[0:2]
 		
-		# find index of last node with frequency below that of the new node
+		# find index of the last node with a frequency below that of the new node
+
 		# if the largest frequency is smaller than the new one, place the new node at the end of the list
 		if (frequencies[-1] < new_frequency):
 			i = -1
 		else:
-			# else, loop over every frequency
-			for index, item in enumerate(frequencies):
-				# if the frequency is greater than or equal to the new frequency
-				if (item >= new_frequency):
+			# loop over every frequency
+			for index, frequency in enumerate(frequencies):
+				if (frequency >= new_frequency):
 					# record the index to insert the frequency at
 					i = index
-					# stop looping
 					break
 		
-		# insert the new node in its rightful position, maintaining ascending order of frequency
+		# insert the new node and frequency in their rightful positions, maintaining ascending order of frequency
 		nodes.insert(i, new_node)
-		# insert the new frequency in its rightful position, maintaining ascending order of frequency
 		frequencies.insert(i, new_frequency)
 
-	# print all nodes
-	print("Nodes: %s" % nodes)
+	print(f"Nodes: {nodes}")
 
 	# encrypted text
 	output = ""
 
-	# for every character in the text to be encrypted
 	for char in txt:
 		# find its path and add it to the encrypted text
 		output += "".join(find_node(nodes, char))
 
-	# print encoded message
-	print("Encoded message: %s" % output)
+	print(f"Encoded message: {output}")
 	
-	# return encoded message
 	return [output, nodes]
 
 def decode(txt, nodes):
@@ -85,20 +77,16 @@ def decode(txt, nodes):
 	output = ""
 	# replicate nodes, for looping over and editing with the first part of the code
 	node = nodes
-	# for each digit
 	for digit in txt:
 			# get the node with the corresponding index
 			node = node[int(digit)]
 			# if the retrieved node isn't a tuple (i.e. it isn't a parent node)
 			if (not isinstance(node, tuple)):
-				# add the node's content to the output
 				output += node
 				# replace the retrieved node with the whole tree again, for looping over and editing with the next part of the code
 				node = nodes
 
-	# print decoded message
-	print("Decoded message: %s" % output)
-	# return decoded message
+	print(f"Decoded message: {output}")
 	return output
 
 encoding = encode(input("Text: "))
