@@ -25,7 +25,7 @@ txt = input("Text: ")
 info = Counter(txt).most_common()
 # change the list into ascending order
 info.reverse()
-# create list for character tupl	es
+# create list for character tuples
 nodes = []
 # create list for node usage frequencies
 frequencies = []
