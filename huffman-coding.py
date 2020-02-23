@@ -44,18 +44,21 @@ while len(nodes) > 1:
 	del nodes[0:2]
 	#  remove frequencies that have been summed and added to the new frequency
 	del frequencies[0:2]
+	
 	# find index of last node with frequency below that of the new node
-	i = 0
-	# if there are more nodes to compare to
-	if (len(nodes) > 0):
-		# if the largest frequency is smaller than the new one, place the new node at the end of the list
-		if (frequencies[-1] < new_frequency):
-			i = -1
-		# else, if the first frequency is larger than the new one
-		elif not (frequencies[i] >= new_frequency):
-			# find the largest frequency that is smaller than the new one
-			while (frequencies[i] < new_frequency):
-				i += 1
+	# if the largest frequency is smaller than the new one, place the new node at the end of the list
+	if (frequencies[-1] < new_frequency):
+		i = -1
+	else:
+		# else, loop over every frequency
+		for index, item in enumerate(frequencies):
+			# if the frequency is greater than or equal to the new frequency
+			if (item >= new_frequency):
+				# record the index to insert the frequency at
+				i = index
+				# stop looping
+				break
+	
 	# insert the new node in its rightful position, maintaining ascending order of frequency
 	nodes.insert(i, new_node)
 	# insert the new frequency in its rightful position, maintaining ascending order of frequency
