@@ -37,6 +37,10 @@ def encode(txt):
 		new_node = (nodes[0], nodes[1])
 		# combine two least frequent characters' frequencies into a total frequency, to be used at the top level of the list of nodes
 		new_frequency = frequencies[0] + frequencies[1]
+
+		print(f"New node: {new_node}, new frequency: {new_frequency}")
+		print(f"Nodes to be removed: {nodes[0:2]}, frequencies to be removed: {frequencies[0:2]}")
+
 		#  remove nodes that have been nested inside the new node
 		del nodes[0:2]
 		#  remove frequencies that have been summed and added to the new frequency
@@ -46,11 +50,13 @@ def encode(txt):
 
 		# if the largest frequency is smaller than the new one, place the new node at the end of the list
 		if (frequencies[-1] < new_frequency):
-			i = -1
+			print("i = -1")
+			i = len(frequencies)
 		else:
 			# loop over every frequency
 			for index, frequency in enumerate(frequencies):
 				if (frequency >= new_frequency):
+					print(f"{frequency} >= {new_frequency}. Breaking. Index is {index}")
 					# record the index to insert the frequency at
 					i = index
 					break
@@ -58,18 +64,27 @@ def encode(txt):
 		# insert the new node and frequency in their rightful positions, maintaining ascending order of frequency
 		nodes.insert(i, new_node)
 		frequencies.insert(i, new_frequency)
+		print(f"Nodes: {nodes}, frequencies: {frequencies}")
 
 	print(f"Nodes: {nodes}")
 
 	# encrypted text
 	output = ""
 
+	# characters and encoded values
+	encoded_values = {}
+
+	for char in set(txt):
+		# find the character's path and add it to the dictionary
+		encoded_values[char] = "".join(find_node(nodes, char))
+
+	print(f"Encoded values: {encoded_values}")
+
 	for char in txt:
-		# find its path and add it to the encrypted text
-		output += "".join(find_node(nodes, char))
+		# add text to final output
+		output += encoded_values[char]
 
 	print(f"Encoded message: {output}")
-	
 	return [output, nodes]
 
 def decode(txt, nodes):
