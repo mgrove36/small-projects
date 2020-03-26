@@ -1,0 +1,83 @@
+FUNCTION get_input( dict):
+   tmp <- None
+   WHILE (not tmp):
+       tmp <- input().upper().strip()
+       IF (not tmp in dict.keys()):
+           OUTPUT "Please enter a valid product code."
+           tmp <- None
+       ENDIF
+   ENDWHILE
+   RETURN tmp
+ENDFUNCTION
+
+FUNCTION print_details( dict):
+   FOR item in dict.keys():
+       OUTPUT "%s: $%.2f, %s" % (item, dict[item][0], dict[item][1])
+   ENDFOR
+ENDFUNCTION
+
+  
+FUNCTION print_chosen( dict, item):
+   OUTPUT "%s: %s" % (item, dict[item][1])
+   RETURN dict[item][0]
+ENDFUNCTION
+
+phones_dict <- {"BPCM": (29.99, "Compact"),
+           "BPSH": (49.99, "Clam Shell"),
+           "RPSH": (199.99, "RoboPhone - 5-inch screen AND 64 GB memory"),
+           "RPLL": (499.99,"RoboPhone - 6-inch screen AND 256 GB memory"),
+           "YPLS": (549.99,"Y-Phone Standard - 6-inch screen and 64 GB memory"),
+           "YPLL": (649.99, "Y-Phone Deluxe - 6-inch screen AND 256 GB memory")}
+tablets_dict <- {"RTMS": (149.99, "RoboTab - 8-inch screen AND 64 GB memory"),
+               "RTLM": (299.99, "RoboTab - 10-inch screen AND 128 GB memory"),
+               "YTLM": (499.99, "Y-Tab Standard - 10-inch screen and 128 GB memory"),
+               "YTLL": (599.99, "Y-Tab Deluxe - 10-inch screen AND 256 GB memory")}
+devices_dict <- {**phones_dict , **tablets_dict}
+sims_dict <- {"SMNO": (0.00, "SIM Free (no SIM card purchased)"),
+           "SMPG": (9.99, "Pay As You Go (SIM card purchased)")}
+case_dict <- {"CSST": (0.00, "Standard"),
+           "CSLX": (50.00, "Luxury")}
+charger_dict <- {"CGCR": (19.99, "Car"),
+               "CGHM": (15.99, "Home")}
+total <- 0
+saving <- 0
+run <- True
+devices <- 0
+WHILE run:
+   OUTPUT "Choose an option:"
+   print_details( devices_dict)
+   device <- get_input( devices_dict)
+   devices += 1
+   IF (device in phones_dict.keys()):
+       OUTPUT "Choose an option:"
+       print_details( sims_dict)
+       sim_payg <- get_input( sims_dict)
+   ENDIF
+   OUTPUT "Choose an option:"
+   print_details( case_dict)
+   case <- get_input( case_dict)
+   OUTPUT "Which charger(s) would you like? Enter the codes for those you want with a space between them, or enter nothing to choose neither"
+   print_details( charger_dict)
+   chargers <- input().upper().split(" ")
+   FOR item in chargers:
+       IF item not in charger_dict:
+           chargers.remove(item)
+       ENDIF
+   ENDFOR
+   IF (devices > 1):
+       total += 0.9 * print_chosen( devices_dict, device)
+       saving += 0.1 * print_chosen( devices_dict, device)
+   ELSE:
+       total += print_chosen( devices_dict, device)
+   ENDIF
+   IF (device in phones_dict):
+       total += print_chosen( sims_dict, sim_payg)
+   ENDIF
+   total += print_chosen( case_dict, case)
+   FOR charger in chargers:
+       total += print_chosen( charger_dict, charger)
+   ENDFOR
+   OUTPUT "Subtotal: $%.2f" % total
+   run <- True IF (input("Would you like another device (y/n)?").lower().strip()[0] = "y") ELSE False
+ENDWHILE
+OUTPUT "Total: $%.2f\nSaving: $%.2f" % (total, saving)
